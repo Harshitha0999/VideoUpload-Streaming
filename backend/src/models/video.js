@@ -6,7 +6,7 @@ const videoSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  path: {                        // ✅ match frontend
+  path: {                       
     type: String,
     required: true,
   },
