@@ -1,33 +1,3 @@
-// const express = require("express");
-// const upload = require("../utils/upload");
-// const Video = require("../models/video");
-// const authMiddleware = require("../middleware/auth.middleware");
-
-// const router = express.Router();
-
-// router.post(
-//   "/upload",
-//   authMiddleware,
-//   upload.single("video"),
-//   async (req, res) => {
-//     if (!req.file)
-//       return res.status(400).json({ message: "No file uploaded" });
-
-//     const video = await Video.create({
-//       filename: req.file.filename,
-//       originalName: req.file.originalname,
-//       path: req.file.path,
-//       userId: req.user._id,
-//     });
-
-//     res.status(201).json({
-//       message: "Video uploaded successfully",
-//       video,
-//     });
-//   }
-// );
-
-// module.exports = router;
 
 const express = require("express");
 const router = express.Router();
@@ -50,7 +20,7 @@ router.post("/upload", authMiddleware, upload.single("video"), async (req, res) 
 
    const video = new Video({
   user: req.user.id,
-  path: `/uploads/${req.file.filename}`,   // ✅ now schema supports it
+  path: `/uploads/${req.file.filename}`,   
   originalName: req.file.originalname,
 });
 
