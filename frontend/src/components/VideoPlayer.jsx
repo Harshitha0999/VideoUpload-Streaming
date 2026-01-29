@@ -1,17 +1,3 @@
-// function VideoPlayer({ video }) {
-//   const videoUrl = `http://localhost:5000/api/videos/stream/${encodeURIComponent(
-//     video.filename
-//   )}`;
-
-//   return (
-//     <div>
-//       <h3>Playing: {video.originalName}</h3>
-//       <video width="600" controls src={videoUrl}></video>
-//     </div>
-//   );
-// }
-
-// export default VideoPlayer;
 function VideoPlayer({ video }) {
   const videoUrl = `http://localhost:5002${video.path}`;
 
