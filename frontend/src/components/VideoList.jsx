@@ -1,37 +1,87 @@
-
-
-import { useEffect, useState } from "react";
-import API from "../api/api";
 import VideoPlayer from "./VideoPlayer";
 
-function VideoList({ refreshTrigger }) {
-  const [videos, setVideos] = useState([]);
-
-  const fetchVideos = async () => {
-    try {
-      const res = await API.get("/videos/user");
-      setVideos(res.data.videos);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchVideos();
-  }, [refreshTrigger]); // refresh when new video uploaded
+export default function VideoList({ videos, onDelete }) {
+  if (!videos.length) {
+    return <p style={{ opacity: 0.6 }}>No videos found.</p>;
+  }
 
   return (
-    <div className="section">
-      <h2>Your Videos</h2>
-      {videos.length === 0 && <p>No videos uploaded yet.</p>}
-      {videos.map((v) => (
-        <div key={v._id} className="video-row">
-          <VideoPlayer video={v} />
+    <div className="video-grid">
+      {videos.map((video) => (
+        <div key={video._id} className="video-card">
+          <div className="video-info">
+            <h3>{video.originalName}</h3>
+
+            <span className={`status-badge ${video.status}`}>
+              {video.status}
+            </span>
+          </div>
+
+          <VideoPlayer videoId={video._id} />
+
+          <div className="video-actions">
+            <button
+              className="delete-btn"
+              onClick={() => onDelete(video._id)}
+            >
+              🗑 Delete
+            </button>
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-export default VideoList;
+// import { useEffect, useState } from "react";
+// import API from "../api/api";
+// import VideoPlayer from "./VideoPlayer";
 
+// export default function VideoList({ refreshTrigger, search }) {
+//   const [videos, setVideos] = useState([]);
+
+//   useEffect(() => {
+//     API.get("/videos/user").then((res) => {
+//       setVideos(res.data.videos || []);
+//     });
+//   }, [refreshTrigger]);
+
+//   const handleDelete = async (id) => {
+//     try {
+//       await API.delete(`/videos/${id}`);
+//       setVideos((prev) => prev.filter((v) => v._id !== id));
+//     } catch (err) {
+//       console.error("Delete failed", err);
+//     }
+//   };
+
+//   const filtered = videos.filter((v) =>
+//     v.originalName.toLowerCase().includes(search.toLowerCase())
+//   );
+
+//   return (
+//     <div className="video-grid">
+//       {filtered.map((video) => (
+//         <div key={video._id} className="video-card">
+//           <h3>{video.originalName}</h3>
+
+//           {video.status === "processing" ? (
+//             <p>Processing... {video.progress}%</p>
+//           ) : (
+//             <span className={`status-badge ${video.status}`}>
+//               {video.status}
+//             </span>
+//           )}
+
+//           <VideoPlayer videoId={video._id} />
+
+//           <div className="video-actions">
+//             <button className="delete-btn" onClick={() => handleDelete(video._id)}>
+//               Delete
+//             </button>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }

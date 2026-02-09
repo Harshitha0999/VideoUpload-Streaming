@@ -1,142 +1,335 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #0f0f0f;
-  color: #ffffff;
-}
-
-/* Wrapper to center app both vertically & horizontally */
-.app-wrapper {
-  min-height: 100vh;            
-  display: flex;
-  justify-content: center;      
-  align-items: center;          
-  padding: 40px;                /* more padding around the app */
+/* ===== RESET ===== */
+* {
   box-sizing: border-box;
 }
 
-/* Container for login/dashboard */
-.container {
-  width: 100%;
-  max-width: 1200px;            /* increased max-width */
-  padding: 50px 60px;           /* more padding for spacious feel */
-  background: #121212;
-  border-radius: 12px;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); /* stronger shadow for bigger container */
+body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+/* ===== APP WRAPPER ===== */
+.app-wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+/* ===== AUTH ===== */
+.auth-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  width: 400px;
+  padding: 40px;
+  background: #111;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;          
-  position: relative;           
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* Logout button top-right */
-.logout-btn {
-  position: absolute;
-  top: 25px;                   
-  right: 25px;
-  margin: 0;
-  background: #e11d48;           
-  padding: 10px 20px;          /* slightly bigger */
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.logout-btn:hover {
-  background: #be123c;
-}
-
-/* Headings */
-h1, h2 {
-  margin-top: 0;
-  margin-bottom: 25px;
-  color: #f5f5f5;
-  text-align: center;            
-  font-size: 28px;               /* bigger headings */
-}
-
-/* Inputs */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="file"] {
-  display: block;
-  width: 100%;
-  max-width: 500px;              /* wider inputs */
-  padding: 15px 18px;            /* larger padding */
-  margin: 12px 0;
-  border-radius: 8px;            /* slightly bigger radius */
-  border: 1px solid #333;
-  background: #1a1a1a;
+.auth-container input {
+  margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #1f1f1f;
   color: #fff;
-  outline: none;
-  font-size: 16px;               /* larger font for readability */
 }
 
-input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px #4f46e5; /* slightly bigger focus ring */
+.auth-container button {
+  padding: 12px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 
-/* Buttons */
-button {
-  padding: 12px 22px;            /* bigger buttons */
+.message {
+  color: #f87171;
+  text-align: center;
+}
+
+.toggle-auth {
+  margin-top: 16px;
+  text-align: center;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* ===== DASHBOARD ===== */
+.dashboard-shell {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 260px;
+  background: #050505;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sidebar button {
+  padding: 12px;
+  background: #1f1f1f;
   border: none;
   border-radius: 8px;
-  background: #4f46e5;
-  color: white;
-  font-weight: 500;
+  color: #fff;
   cursor: pointer;
-  transition: 0.2s;
-  margin-top: 12px;
-  font-size: 16px;
 }
 
-button:hover {
-  background: #4338ca;
+.sidebar button:hover {
+  background: #4f46e5;
 }
 
-/* Toggle link for login/register */
-button.toggle-btn {
+.logout-btn {
+  margin-top: auto;
+  background: #7f1d1d;
+}
+
+/* ===== SEARCH ===== */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: #111;
+  border-radius: 10px;
+}
+
+.search-box input {
   background: transparent;
   border: none;
-  color: #4f46e5;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 16px;               /* bigger font for toggle */
-  margin-left: 5px;
-  padding: 0;
+  color: #fff;
+  outline: none;
 }
 
-button.toggle-btn:hover {
-  color: #6366f1;
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #111, #050505);
 }
 
-/* Messages */
-.message {
-  margin-top: 12px;
-  color: #fbbf24;
-  font-size: 15px;               /* slightly bigger for visibility */
+.page-title {
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-/* Video cards */
-.video-card {
-  background: #1c1c1c;
-  padding: 20px;                 /* more padding for spacious feel */
+/* ===== DASHBOARD CARDS ===== */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.dash-card {
+  background: #16161d;
+  padding: 24px;
   border-radius: 14px;
-  margin: 20px 0;                
-  width: 100%;
 }
 
-.video-card p {
-  margin: 6px 0 12px;
-  font-size: 15px;
-  color: #ccc;
+.dash-card h1 {
+  margin: 0;
+  font-size: 36px;
 }
 
-video {
+/* ===== VIDEO GRID ===== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.video-card {
+  background: #16161d;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.video-card video {
   width: 100%;
+  height: 180px;
+  object-fit: cover;
   border-radius: 10px;
-  border: 1px solid #333;
+  background: #000;
 }
+
+/* ===== BADGES ===== */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status-badge.safe {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+.status-badge.flagged {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+.status-badge.processing {
+  background: #1e3a8a;
+  color: #93c5fd;
+}
+
+/* ===== SETTINGS ===== */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+}
+
+.settings-menu button {
+  background: #1f1f1f;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+}
+
+.settings-box {
+  background: #16161d;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #aaa;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+/* LOGIN PAGE STYLES */
+.auth-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2c3e50, #34495e); /* dark gradient background */
+  font-family: 'Arial', sans-serif;
+  transition: background 0.5s ease;
+}
+
+/* Card container */
+.login-container {
+  display: flex;
+  width: 90%;
+  max-width: 900px;
+  background: #f0f0f5; /* light greyish-white card */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* subtle shadow */
+}
+
+/* Left side with heading/image */
+.login-left {
+  flex: 1;
+  padding: 40px;
+  background: #e0e0e8; /* slightly different shade for left side */
+  text-align: center;
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #2c3e50; /* dark text for contrast */
+}
+
+.login-left p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #555; /* softer text */
+}
+
+.login-left .login-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Right side with form */
+.login-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.login-right input {
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fafafa; /* very light input background */
+  color: #2c3e50;
+}
+
+.login-right input::placeholder {
+  color: #888;
+}
+
+.login-right button {
+  padding: 14px;
+  margin-top: 15px;
+  background: #2980b9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-right button:hover {
+  background: #1f618d;
+}
+
+.login-right .message {
+  color: #e74c3c;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.login-right .toggle-auth {
+  display: block;
+  margin-top: 15px;
+  text-align: center;
+  color: #3498db;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+
 

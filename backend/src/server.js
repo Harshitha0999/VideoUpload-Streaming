@@ -1,73 +1,74 @@
-// const express = require("express");
-// const path = require("path");
-// const cors = require("cors");
-// require("dotenv").config();
-
-// const connectDB = require("./config/db");
-
-// const authRoutes = require("./routes/auth.routes");
-// const videoRoutes = require("./routes/video.routes");
-
-// const app = express();
-
-// // DB
-// connectDB();
-
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// // Static uploads
-// app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
-
-// // Routes
-// app.use("/api/auth", authRoutes);
-// app.use("/api/videos", videoRoutes);
-
-// // Error handler
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ message: err.message || "Server Error" });
-// });
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on port ${PORT}`);
-// });
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const dotenv = require("dotenv");
+const http = require("http");
+const { Server } = require("socket.io");
 
-dotenv.config(); // load .env file
+dotenv.config();
+
 const app = express();
+const server = http.createServer(app);
 
-// Middleware
+/* ================= SOCKET.IO (FIXED) ================= */
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"],
+});
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+// Make io available in routes
+app.set("io", io);
+
+/* ================= MIDDLEWARE ================= */
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); // serve uploaded videos
 
-// Routes
+/* ================= TEST ROUTE ================= */
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
+
+/* ================= STATIC UPLOADS ================= */
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+/* ================= ROUTES ================= */
 const authRoutes = require("./routes/auth.routes");
 const videoRoutes = require("./routes/video.routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/videos", videoRoutes);
 
-// MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/videoApp";
+/* ================= SOCKET EVENTS ================= */
+io.on("connection", (socket) => {
+  console.log("🟢 Client connected:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("🔴 Client disconnected:", socket.id);
+  });
+});
+
+/* ================= MONGODB ================= */
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/videoApp";
+
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Use port from .env or fallback to 5001
+/* ================= SERVER ================= */
 const PORT = process.env.PORT || 5002;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
